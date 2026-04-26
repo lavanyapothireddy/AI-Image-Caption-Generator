@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Image Caption Generator</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="header">
+    <h1>AI Image <span>Caption</span> Generator</h1>
+    <p>Upload any image and get instant captions, alt-text &amp; descriptions</p>
+    <div class="powered">⚡ Powered by Groq &middot; Free &amp; Instant</div>
+  </div>
+
+  <!-- Model Selector -->
+  <div class="card">
+    <div class="section-label">Choose AI Model</div>
+    <div class="chips">
+      <button class="chip active" data-model="meta-llama/llama-4-scout-17b-16e-instruct">
+        Llama 4 Scout <span class="chip-note">● fastest</span>
+      </button>
+      <button class="chip" data-model="meta-llama/llama-4-maverick-17b-128e-instruct">
+        Llama 4 Maverick
+      </button>
+      <button class="chip" data-model="llava-v1.5-7b-4096-preview">
+        LLaVA 1.5 7B
+      </button>
+    </div>
+  </div>
+
+  <!-- Upload -->
+  <div class="card">
+    <div class="section-label">Upload Image</div>
+    <div id="uploadZone" class="upload-zone">
+      <input type="file" id="fileInput" accept="image/*"/>
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="3"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      </div>
+      <div class="uz-title"><strong>Click to upload</strong> or drag &amp; drop</div>
+      <div class="uz-sub">PNG, JPG, WEBP — max 4MB</div>
+    </div>
+    <div id="previewWrap" style="display:none; margin-top:1rem;">
+      <div class="preview-wrap">
+        <img id="previewImg" src="" alt="preview"/>
+        <button class="preview-remove" id="removeImg">✕</button>
+      </div>
+      <div id="fileBadge" class="file-badge" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Options -->
+  <div class="card">
+    <div class="section-label">Caption Settings</div>
+    <div class="opts-grid">
+      <div class="opt">
+        <label for="styleOpt">Style</label>
+        <select id="styleOpt">
+          <option value="descriptive">Descriptive</option>
+          <option value="social">Social Media</option>
+          <option value="journalistic">Journalistic</option>
+          <option value="poetic">Poetic</option>
+          <option value="formal">Formal / Professional</option>
+          <option value="seo">SEO-optimized</option>
+        </select>
+      </div>
+      <div class="opt">
+        <label for="lengthOpt">Length</label>
+        <select id="lengthOpt">
+          <option value="short">Short (1 line)</option>
+          <option value="medium" selected>Medium (2–3 lines)</option>
+          <option value="long">Long (paragraph)</option>
+        </select>
+      </div>
+      <div class="opt">
+        <label for="toneOpt">Tone</label>
+        <select id="toneOpt">
+          <option value="neutral">Neutral</option>
+          <option value="enthusiastic">Enthusiastic</option>
+          <option value="informative">Informative</option>
+          <option value="humorous">Humorous</option>
+          <option value="inspiring">Inspiring</option>
+        </select>
+      </div>
+      <div class="opt">
+        <label for="countOpt">Number of Captions</label>
+        <select id="countOpt">
+          <option value="1">1 caption</option>
+          <option value="3" selected>3 captions</option>
+          <option value="5">5 captions</option>
+        </select>
+      </div>
+    </div>
+    <hr/>
+    <div class="opt">
+      <label for="customInstr">Custom instruction (optional)</label>
+      <input type="text" id="customInstr" placeholder="e.g. focus on the landscape, suitable for LinkedIn..."/>
+    </div>
+  </div>
+
+  <!-- Generate Button -->
+  <button class="btn" id="generateBtn" disabled>
+    <span id="btnContent">Upload an image to begin</span>
+  </button>
+
+  <!-- Error -->
+  <div id="errorBox" style="display:none;"></div>
+
+  <!-- Results -->
+  <div id="resultsSection" class="results-section" style="display:none;">
+    <div class="card">
+      <div class="section-label" style="margin-bottom:1.1rem;">Generated Captions</div>
+      <div id="captionsContainer"></div>
+    </div>
+    <div class="card">
+      <div class="section-label">
+        Alt Text <span class="label-note">(for accessibility)</span>
+      </div>
+      <div class="result-box">
+        <button class="copy-btn" id="copyAlt">Copy</button>
+        <p id="altTextOut"></p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-label">Full Description</div>
+      <div class="result-box">
+        <button class="copy-btn" id="copyDesc">Copy</button>
+        <p id="descOut"></p>
+      </div>
+      <div class="char-count" id="descCount"></div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
